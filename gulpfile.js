@@ -7,7 +7,8 @@ var gulp = require( "gulp" ),
     stylus = require( "gulp-stylus" ),
     gutil = require( "gulp-util" ),
     coffee = require( "gulp-coffee" ),
-    coffeelint = require( "gulp-coffeelint" );
+    coffeelint = require( "gulp-coffeelint" ),
+    uglify = require( "gulp-uglify" );
 
 gulp.task("serve", function(){
     connect.server({
@@ -51,6 +52,9 @@ gulp.task("validate_coffee",function(){
 gulp.task("coffee",["validate_coffee"],function(){
     gulp.src("src/coffee/*.coffee")
         .pipe(coffee({ bare: true }).on('error', gutil.log))
+        .pipe(gulp.dest("dist/js"))
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(uglify())
         .pipe(gulp.dest("dist/js"))
         .pipe( connect.reload() );
 });

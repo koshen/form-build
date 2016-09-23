@@ -15,6 +15,16 @@
   "bugs": {
     "url": "https://github.com/koshen/form-build/issues"
   },
+  "coffeelintConfig": {
+    "indentation" : {
+        "level" : "ignore",
+        "value" : 4
+    },
+    "max_line_length": {
+      "level" : "ignore",
+      "value" : 100
+    }
+  },
   "homepage": "https://github.com/koshen/form-build#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -26,6 +36,7 @@
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
     "gulp-stylus": "^2.5.0",
+    "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7"
   }
 }
