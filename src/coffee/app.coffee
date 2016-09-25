@@ -10,18 +10,22 @@
     class BaseModal
 
         data =
-            id: ko.observable()
-            code: ko.observable()
-            name: ko.observable()
-            require: ko.observable(false)
-            errors: ko.observable()
-
+            responseFileds: ko.observableArray([
+                id: ko.observable()
+                label: ko.observable(null)
+                require: ko.observable(false)
+                errors: ko.observable()
+                filed_type: ko.observable("text")
+                filed_options: ko.observable()
+            ])
+            isLoading: ko.observable(true)
+            mode: ko.observable("base")
+            setmode: ko.observable()
         getData: ->
             return data
-
         setData: ( name, value ) ->
             @set( data, name, value )
-
+        setMode: ->
         change: ( name, cb ) ->
             data[ name ].subscribe cb
         set: ( d, name, value ) ->
@@ -38,114 +42,116 @@
 
         is: ( obj, type ) ->
             return ( type is "Null" and obj is null ) or ( type is "Undefined" and obj is undefined ) or ( type is "Number" and isFinite obj ) or Object.prototype.toString.call(obj).slice(8,-1) is type
+  
 
-    ###
-    # @name BaseResponseFile 基础file的问题类
-    # init 类在构造函数中会调用该方法
-    # render 视图重绘方法
-    # getTemplateBody 抽象接口，在各个子类中定义不同的视图
-    ###
 
-    class BaseResponseFile extends BaseModal
-
-        constructor: ( options )->
-            for key, value in options
-                @setData(key, value)
-            @init()
-
-        getTemplateHead: ->
+    class Template
+        textFile: ->
             return("""
-                <div>
-                    <span data-bind='visible: require()'>*</span>
-                    <span data-bind='text: code()'></span>
-                    <span data-bind='text: name()'></span>
+                <div data-bind="style:{ width: filed_options.size === 'one_column'? '100%' : '50%' }">
+                    <input type='text' data-bind='value: value'>
                 </div>
             """)
-
-        getTemplateBody: ->
-            return ""
-
-        getTemplateErrors: ->
+        fileHead:() ->
             return("""
-                <div>
-                    <div  data-bind='visible: errors()' data-bind="text: errors()" ></div>
+                <div class="crf-filed-header">
+                    <span data-bind='visible: required'>*</span>
+                    <span data-bind='text: id'></span>
+                    <span>-</span>
+                    <span data-bind='text: label'></span>
                 </div>
             """)
-        
-        template: ( v ) ->
-            $( v ).append @getTemplateHead()
-            $( v ).append @getTemplateBody()
-            if @data.require
-                $( v ).append @getTemplateErrors()
-
-        render: ->
-            ko.applyBindings( @data )
-        init: ->
-            @setData("layout","one_column")
-            @data = @getData()
-            @render()
-
-    class TextFile extends BaseResponseFile
-        getTemplateBody: ->
+        fileError: ->
             return("""
-                <div data-bind="style:{ width: layout() === 'one_column'? '100%' : '50%' }">
-                    <input type='text' data-bind='value: value()'>
+                <div data-errors>
+                    
                 </div>
             """)
-        getValue: ->
-            d[ @data.id() ] = @data.value()
-            return d
-        render: ->
-            @template( '[data-text]' )
-            super()
-        init: ->
-            @setData("type","text")
-            @setData( "value", null )
-            super()
-
-    class FormBuilder extends BaseModal
-
-        _data =
-            el: ko.observable("[data-formcontent]")
-        
-        constructor: ( options ) ->
-            for key, value of options
-                @set( _data, key, value )
-            @init()
-        
-        templateLoading = ->
+        fileLoading: ->
             return("""
                 <div class="crf-form-loading" >loading</div>
             """)
-        templateContent = ->
+        formContainer: ->
+            return("""
+                <div class='crf-form-container' ></div>
+            """)
+        formContent: ->
             return("""
                 <div class="crf-form-content" data-bind="foreach: responseFileds()">
-                    <div data-bind="if: type === 'text'" data-bind="attr: {'data-text':''}">
-                        <div data-bind="text: id" ></div>
-                    </div>
-                    <div data-bind="if: type === 'checkbox'" data-bind="attr: {'data-checkbox'}">
-                        <div data-bind="text: id" ></div>
+                    <div data-bind="attr:{ id: id }" class="crf-filed-container">
+                        #{@fileHead()}
+                        <div data-bind="if: filed_type=='text'" >#{@textFile()}</div>
+                        #{@fileError()}
                     </div>
                 </div>
             """)
-        template: ( v ) ->
-            $( v ).html "<div class='crf-form-container' >#{if _data.isLoading() then templateLoading() else templateContent()}</div>"
-        render: ->
-            console.log _data
-            @template _data.el()
-            ko.applyBindings _data
+        chooseView: ( type ) ->
+            switch( type )
+                when "fileHead" then return @fileHead()
+                when "error" then return @fileError()
+                when "text" then return @textFile()
+                when "loading" then return @fileLoading()
+    
+     class BaseResponseFiled extends BaseModal
+        _index = 0
+    
+        constructor: ( index )->
+            _index = index
+        getValue: ->
+            return _data.value
+    class TextFiled extends BaseResponseFiled
+
+
+    class FormBuilder extends BaseModal
+        _model = {}
+        constructor: ( options ) ->
+            @setData("el","[data-formcontent]")
+            @setData("setmode", @setMode)
+            for key, value of options
+                @setData( key, value )
+            @init()
+       
+        setMode: ( value ) ->
+            console.log( value )
+        render: ()->
+            @template @getData().el()
         init: ->
-            @render()
-   
+            ko.bindingHandlers.modeType =
+                update: ( element, valueAccessor, allBindings )->
+                    value = valueAccessor()
+                    #console.log value
+            #@render()
+            ko.applyBindings @getData()
+            for key, value of @getData().responseFileds()
+                switch value.filed_type
+                    when "text" then _model[ key ] = new TextFiled key
     
     response =
         responseFileds:[
-            type: "text"
-            value: '123'
-            id: '456'
-            name: 'test'
+            {
+                filed_type: "text"
+                value: '123'
+                id: 456
+                required: false
+                label: 'test'
+                filed_options:{
+                    size: "one_column"
+                }
+            }
+            {
+                filed_type: "text"
+                value: ''
+                id: 234
+                required: false
+                label: 'test'
+                filed_options:{
+                    size: "one_column"
+                }
+            }
         ]
         isLoading: false
+        formName: "入院查体"
+        formCode: "c24"
 
     b = new FormBuilder response
 

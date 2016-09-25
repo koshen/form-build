@@ -1,14 +1,86 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <link rel="stylesheet" href="font/styles.css">
         <link rel="stylesheet" href="css/main.min.css">
         <title>form-build</title>
     </head>
     <body>
-        <div class="test">form-build</div>
-        <div data-formcontent></div>
+        <div class="crf-form-header">
+            <div class="header-name" >
+               CRF  表单设计
+            </div>
+            <div class="header-base-message">
+                <ul>
+                    <li>表单编号：<input type="text" data-bind="value: formCode()"></li>
+                    <li>表单名称：<input type="text" data-bind="value: formName()"></li>
+                </ul>
+            </div>
+            <div class="header-right-btns">
+                <ul>
+                    <li><a><i class="icon-eye8"></i>  预览表单</a></li>
+                    <li><a><i class="icon-browser"></i>  保存表单</a></li>
+                    <li><a><i class="icon-task"></i>  发布表单</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="crf-form-left-btns">
+
+        </div>
+        <div class="crf-form-right-sitings">
+            <div class="base-mode-container">
+                <div class="base-mode-header">
+                    <div class="title">
+                        <h4>属性</h4>
+                    </div>
+                    <div class="tabs-title">
+                        <ul>
+                            <li class="active" data-bind="click: setmode().bind($data, 'base')">
+                                <a>
+                                    <i class="icon-rulers"></i>
+                                </a>
+                            </li>
+                            <li data-bind="modeType: mode()">
+                                <a>
+                                    <i class="icon-rulers"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <div>基本属性</div>
+                    </div>
+                </div>
+                <div class="base-mode-content">
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="crf-form">
+            <div class='crf-form-container' >
+                <div class="crf-form-loading" data-bind="if: isLoading()">loading</div>
+                <div data-bind="if: !isLoading()">
+                    <div class="crf-form-content" data-bind="foreach: responseFileds()">
+                        <div data-bind="attr:{ id: id }" class="crf-filed-container">
+                            <div class="crf-filed-header">
+                                <span data-bind='visible: required'>*</span>
+                                <span data-bind='text: id'></span>
+                                <span>-</span>
+                                <span data-bind='text: label'></span>
+                            </div>
+                            <div data-bind="if: filed_type=='text'" >
+                                <div data-bind="style:{ width: filed_options.size === 'one_column'? '100%' : '50%' }">
+                                    <input type='text' data-bind='value: value'>
+                                </div>
+                            </div>
+                            <div data-errors></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script type="text/javascript" src="lib/jquery.min.js"></script>
         <script type="text/javascript" src="lib/konckout.min.js"></script>
-        <script type="text/javascript" src="js/app.min.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
     </body>
 </html>

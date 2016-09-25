@@ -1,12 +1,202 @@
+*
+    margin 0
+    padding 0
+    list-style none
+    font-style none
+    font-weight normal
+shadow = rgba(0, 0, 0, 0.156863) 0px 2px 5px 0px, rgba(0, 0, 0, 0.117647) 0px 2px 10px 0px
+c-d-2 = rgb(25,25,25)
+c-d-1 = rgb(52,52,52)
+c-title = rgb(30,30,30)
+c-g = rgb(139,139,139)
+c-g-1 = rgb( 201,201,201 )
+c-btn-b = rgb(70,70,70)
+space-c = rgb(38,38,38)
+space-border = 1px solid space-c
+c-b = #00a3d9
+c-d = #167195
+c-l = #e7eaec
+.crf-form-btn
+    background-color c-btn-b
+    border space-border
+    color c-g-1
+    font-size 12px
+    border-radius 2px
+    display inline-block
+    line-height 20px
+    padding 0 10px
+    box-sizing border-box
+    cursor pointer
+    transition 200ms
+    &:hover
+        color #f9f9f9
 body
-    background-color #f5f5f5
-    color #999
-    a
-        font-style none
-        color #1b99e8
-    .test
-        color #333
+    background-color c-d-2
+    min-width 1024px
+.crf-form-header
+    position absolute
+    top 0
+    left 0
+    right 0
+    height 40px
+    background-color c-d-1
+    box-shadow shadow
+    border-radius 2px
+    overflow hidden
+    padding 8px 0
+    box-sizing border-box
+    line-height = 24px
+    >.header-name
+        font-size 14px
+        line-height line-height
+        color c-b
+        font-weight bold
+        float left
+        padding 0 20px
+        border-right space-border
+    >.header-base-message
+        float left
+        padding 0 10px
+        border-right space-border
+        >ul
+            display table
+            >li
+                font-size 12px
+                color c-l
+                line-height: line-height
+                display table-cell
+                padding 0 10px
+                >input
+                    height line-height
+                    line-height line-height
+                    background-color rgba(0,0,0,.4)
+                    border 1px solid rgba( 0,0,0,.41 )
+                    border-radius 2px
+                    color c-l
+                    padding-left .5em
+                    outline none
+                    transition 200ms
+                    &:focus
+                        background-color #f9f9f9
+                        border-color #eee
+                        color #333 
+    >.header-right-btns
+        float right
+        padding 0 10px
+        >ul
+            display table
+            >li 
+                display table-cell
+                padding 2px 5px
+                >a
+                    @extend .crf-form-btn
+                    >i
+                        font-size 10px
+                        padding-top 1px
+
+.crf-form-left-btns
+    position absolute
+    top 42px
+    left 0
+    width 56px
+    bottom 0
+    background-color c-d-1
+    box-shadow shadow
+.crf-form-right-sitings
+    position absolute
+    top 42px
+    right 0
+    width 302px
+    bottom 0
+    background-color c-d-1
+    >.base-mode-container
+        >.base-mode-header
+            border-bottom space-border
+            >.title
+                background-color c-title
+                >h4
+                    background-color c-d-1
+                    line-height 20px
+                    display inline-block
+                    border-radius 0 2px 0 0
+                    font-size 12px
+                    color c-g-1
+                    padding 0 8px
+                    border-right space-border
+            >.tabs-title
+                overflow hidden 
+                padding 8px 20px
+                >ul
+                    float left
+                    overflow hidden
+                    >li
+                        float left
+                        margin-right 5px
+                        width 26px
+                        border-radius 2px
+                        border 1px solid transparent
+                        text-align center
+                        >a
+                            line-height 24px
+                            color c-g
+                            font-size 12px
+                        &.active
+                            background-color c-title
+                            border-color c-d-2
+                            >a
+                                color c-g-1   
+                >div
+                    float left
+                    //padding-left 10px
+                    line-height 24px
+                    font-size 12px
+                    color c-g-1
+.crf-form
+    position absolute
+    top 42px
+    left 58px
+    bottom 0
+    right 304px
+    overflow-y auto
+    overflow-x hidden
+    //background-color: c-l
+    padding 20px
+.crf-form-container
+    width 80%
+    border-radius 4px;
+    background-color #fff
+    box-shadow shadow
+    margin 0 auto
+    min-height 100%
+    box-sizing border-box
+    .crf-form-content
         width 100%
-        line-height 38px
-        font-size 24px
-        border-radius 4px
+        max-width 600px
+        margin 0 auto
+        .crf-filed-container
+            width 100%
+            padding 20px
+            box-sizing border-box
+            .crf-filed-header
+                width 100%
+                padding-left 10px
+                box-sizing border-box
+                >span
+                    display inline-block
+                    font-size 12px
+                    font-weight 700
+                    color c-d-2
+            input
+                width 100%
+                line-height 32px
+                border 0 none
+                border-bottom 1px solid c-d-2
+                outline none
+                font-size 12px
+                color #999
+                font-weight 600
+                padding-left 10px
+                box-sizing border-box
+                &:focus
+                    border-bottom-color #3f51b5
+                    color #3f51b5
