@@ -23,6 +23,26 @@
 .crf-form-header >.header-right-btns >ul >li >a:hover {
   color: #f9f9f9;
 }
+.crf-form-text,
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >input,
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >select {
+  height: line-height;
+  line-height: line-height;
+  background-color: rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,0,0,0.41);
+  border-radius: 2px;
+  color: #e7eaec;
+  padding-left: 0.5em;
+  outline: none;
+  transition: 200ms;
+}
+.crf-form-text:focus,
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >input:focus,
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >select:focus {
+  background-color: #f9f9f9;
+  border-color: #eee;
+  color: #333;
+}
 body {
   background-color: #191919;
   min-width: 1024px;
@@ -145,6 +165,7 @@ body {
   text-align: center;
 }
 .crf-form-right-sitings >.base-mode-container >.base-mode-header >.tabs-title >ul >li >a {
+  cursor: pointer;
   line-height: 24px;
   color: #8b8b8b;
   font-size: 12px;
@@ -158,9 +179,45 @@ body {
 }
 .crf-form-right-sitings >.base-mode-container >.base-mode-header >.tabs-title >div {
   float: left;
+  padding-left: 5px;
   line-height: 24px;
   font-size: 12px;
   color: #c9c9c9;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content {
+  padding: 20px;
+  border-top: 1px solid #444;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content {
+  width: 100%;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group {
+  display: table;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >label {
+  display: table-cell;
+  font-size: 12px;
+  color: #e7eaec;
+  width: 3.6em;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div {
+  display: table-cell;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >input {
+  line-height: 22px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.crf-form-right-sitings >.base-mode-container >.base-mode-content >ul >li >.siting-content >.siting-group >div >select {
+  line-height: 24px;
+  height: 24px;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  box-sizing: border-box;
 }
 .crf-form {
   position: absolute;

@@ -34,24 +34,45 @@
                         <h4>属性</h4>
                     </div>
                     <div class="tabs-title">
-                        <ul>
-                            <li class="active" data-bind="click: setmode().bind($data, 'base')">
-                                <a>
-                                    <i class="icon-rulers"></i>
-                                </a>
-                            </li>
-                            <li data-bind="modeType: mode()">
-                                <a>
-                                    <i class="icon-rulers"></i>
+                        <ul data-bind="foreach: modeNames()">
+                            <li data-bind="css: {active: name == $parent.mode().value}" >
+                                <a data-bind="click: $parent.setmode().bind($parent, name, label)">
+                                    <i data-bind="css: icon"></i>
                                 </a>
                             </li>
                         </ul>
-                        <div>基本属性</div>
+                        <div data-bind="text: mode().label"></div>
                     </div>
                 </div>
                 <div class="base-mode-content">
                     <ul>
-                        <li></li>
+                        <li data-bind="visible: mode().value == 'base'">
+                            <div class="siting-content">
+                                <div class="siting-group">
+                                    <label>编号：</label>
+                                    <div>
+                                        <input type="text" data-bind="textInput: filedContent().id">
+                                    </div>
+                                </div>
+                                <div class="siting-group">
+                                    <label>名称：</label>
+                                    <div>
+                                        <input type="text" data-bind="textInput: filedContent().label">
+                                    </div>
+                                </div>
+                                 <div class="siting-group">
+                                    <label>类型：</label>
+                                    <div>
+                                        <select data-bind="
+                                            options: filedTypes(),
+                                            value: filedContent().filed_type,
+                                            optionsText: 'label',
+                                            optionsValue: 'value'
+                                        "></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -61,16 +82,21 @@
                 <div class="crf-form-loading" data-bind="if: isLoading()">loading</div>
                 <div data-bind="if: !isLoading()">
                     <div class="crf-form-content" data-bind="foreach: responseFileds()">
-                        <div data-bind="attr:{ id: id }" class="crf-filed-container">
-                            <div class="crf-filed-header">
+                        <div data-bind="click: $parent.chooseFiled.bind($parent, id())" class="crf-filed-container" >
+                            <div class="crf-filed-header"  >
                                 <span data-bind='visible: required'>*</span>
-                                <span data-bind='text: id'></span>
+                                <span data-bind='text: id()'></span>
                                 <span>-</span>
-                                <span data-bind='text: label'></span>
+                                <span data-bind='text: label()'></span>
                             </div>
-                            <div data-bind="if: filed_type=='text'" >
-                                <div data-bind="style:{ width: filed_options.size === 'one_column'? '100%' : '50%' }">
-                                    <input type='text' data-bind='value: value'>
+                            <div data-bind="if: filed_type() =='text'">
+                                <div data-bind="style:{ width: filed_options.size() === 'one_column'? '100%' : '50%' }" >
+                                    <input type='text' data-bind='value: value()'>
+                                </div>
+                            </div>
+                            <div data-bind="if: filed_type() =='radio'">
+                                <div data-bind="style:{ width: filed_options.size() === 'one_column'? '100%' : '50%' }" >
+                                    radio
                                 </div>
                             </div>
                             <div data-errors></div>

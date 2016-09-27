@@ -30,6 +30,20 @@ c-l = #e7eaec
     transition 200ms
     &:hover
         color #f9f9f9
+.crf-form-text
+    height line-height
+    line-height line-height
+    background-color rgba(0,0,0,.4)
+    border 1px solid rgba( 0,0,0,.41 )
+    border-radius 2px
+    color c-l
+    padding-left .5em
+    outline none
+    transition 200ms
+    &:focus
+        background-color #f9f9f9
+        border-color #eee
+        color #333 
 body
     background-color c-d-2
     min-width 1024px
@@ -137,6 +151,7 @@ body
                         border 1px solid transparent
                         text-align center
                         >a
+                            cursor pointer
                             line-height 24px
                             color c-g
                             font-size 12px
@@ -147,10 +162,43 @@ body
                                 color c-g-1   
                 >div
                     float left
-                    //padding-left 10px
+                    padding-left 5px
                     line-height 24px
                     font-size 12px
                     color c-g-1
+        >.base-mode-content
+            padding 20px
+            border-top 1px solid #444
+            >ul
+                >li
+                    >.siting-content
+                        width 100%
+                        >.siting-group
+                            display table
+                            width 100%
+                            margin-bottom 10px
+                            >label
+                                display table-cell
+                                font-size 12px
+                                color c-l
+                                width 3.6em
+                            >div
+                                display table-cell
+                                >input
+                                    @extend .crf-form-text
+                                    line-height 22px
+                                    width 100%
+                                    box-sizing border-box
+                                >select
+                                    @extend .crf-form-text
+                                    line-height 24px
+                                    height: 24px
+                                    width 100%
+                                    -webkit-appearance  none
+                                    -moz-appearance  none
+                                    -ms-appearance  none
+                                    box-sizing border-box
+                            
 .crf-form
     position absolute
     top 42px

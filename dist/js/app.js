@@ -1,5 +1,6 @@
 var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
+  hasProp = {}.hasOwnProperty,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 (function() {
 
@@ -9,7 +10,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
    * @parma{ String } code file 的编号
    * @parma{ boolean } require file是否必填
    */
-  var BaseModal, BaseResponseFiled, FormBuilder, Template, TextFiled, b, response;
+  var BaseModal, BaseResponseFiled, FormBuilder, TextFiled, b, response;
   BaseModal = (function() {
     var data;
 
@@ -27,8 +28,60 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
         }
       ]),
       isLoading: ko.observable(true),
-      mode: ko.observable("base"),
-      setmode: ko.observable()
+      activeFiled: ko.observable(),
+      filedContent: ko.observable({
+        id: "",
+        label: "",
+        require: "",
+        errors: "",
+        filed_type: "",
+        filed_options: []
+      }),
+      mode: ko.observable({
+        value: "base",
+        label: "基本属性"
+      }),
+      filedTypes: ko.observableArray([
+        {
+          label: "单行文本",
+          value: "text"
+        }, {
+          label: "单选题",
+          value: "radio"
+        }, {
+          label: "多选题",
+          value: "checkbox"
+        }, {
+          label: "多行文本",
+          value: "textArea"
+        }
+      ]),
+      modeNames: ko.observableArray([
+        {
+          name: "base",
+          icon: "icon-rulers",
+          label: "基本属性"
+        }, {
+          name: "relation",
+          icon: "icon-git-compare",
+          label: "逻辑关系"
+        }
+      ]),
+      setmode: ko.observable(),
+      chooseFiled: function(id) {
+        var key, ref, results, value;
+        ref = this.responseFileds();
+        results = [];
+        for (key in ref) {
+          value = ref[key];
+          if (value.id() === id) {
+            results.push(this.filedContent(value));
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
     };
 
     BaseModal.prototype.getData = function() {
@@ -69,49 +122,6 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     return BaseModal;
 
   })();
-  Template = (function() {
-    function Template() {}
-
-    Template.prototype.textFile = function() {
-      return "<div data-bind=\"style:{ width: filed_options.size === 'one_column'? '100%' : '50%' }\">\n    <input type='text' data-bind='value: value'>\n</div>";
-    };
-
-    Template.prototype.fileHead = function() {
-      return "<div class=\"crf-filed-header\">\n    <span data-bind='visible: required'>*</span>\n    <span data-bind='text: id'></span>\n    <span>-</span>\n    <span data-bind='text: label'></span>\n</div>";
-    };
-
-    Template.prototype.fileError = function() {
-      return "<div data-errors>\n    \n</div>";
-    };
-
-    Template.prototype.fileLoading = function() {
-      return "<div class=\"crf-form-loading\" >loading</div>";
-    };
-
-    Template.prototype.formContainer = function() {
-      return "<div class='crf-form-container' ></div>";
-    };
-
-    Template.prototype.formContent = function() {
-      return "<div class=\"crf-form-content\" data-bind=\"foreach: responseFileds()\">\n    <div data-bind=\"attr:{ id: id }\" class=\"crf-filed-container\">\n        " + (this.fileHead()) + "\n        <div data-bind=\"if: filed_type=='text'\" >" + (this.textFile()) + "</div>\n        " + (this.fileError()) + "\n    </div>\n</div>";
-    };
-
-    Template.prototype.chooseView = function(type) {
-      switch (type) {
-        case "fileHead":
-          return this.fileHead();
-        case "error":
-          return this.fileError();
-        case "text":
-          return this.textFile();
-        case "loading":
-          return this.fileLoading();
-      }
-    };
-
-    return Template;
-
-  })();
   BaseResponseFiled = (function(superClass) {
     var _index;
 
@@ -120,11 +130,15 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     _index = 0;
 
     function BaseResponseFiled(index) {
-      _index = index;
+      this.setId(index);
     }
 
-    BaseResponseFiled.prototype.getValue = function() {
-      return _data.value;
+    BaseResponseFiled.prototype.getId = function() {
+      return _index;
+    };
+
+    BaseResponseFiled.prototype.setId = function(id) {
+      return _index = id;
     };
 
     return BaseResponseFiled;
@@ -133,9 +147,12 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
   TextFiled = (function(superClass) {
     extend(TextFiled, superClass);
 
-    function TextFiled() {
-      return TextFiled.__super__.constructor.apply(this, arguments);
+    function TextFiled(index) {
+      TextFiled.__super__.constructor.call(this, index);
+      this.init();
     }
+
+    TextFiled.prototype.init = function() {};
 
     return TextFiled;
 
@@ -148,6 +165,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     _model = {};
 
     function FormBuilder(options) {
+      this.setMode = bind(this.setMode, this);
       var key, value;
       this.setData("el", "[data-formcontent]");
       this.setData("setmode", this.setMode);
@@ -158,8 +176,11 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
       this.init();
     }
 
-    FormBuilder.prototype.setMode = function(value) {
-      return console.log(value);
+    FormBuilder.prototype.setMode = function(value, label) {
+      return this.setData("mode", {
+        value: value,
+        label: label
+      });
     };
 
     FormBuilder.prototype.render = function() {
@@ -168,13 +189,10 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
 
     FormBuilder.prototype.init = function() {
       var key, ref, results, value;
-      ko.bindingHandlers.modeType = {
-        update: function(element, valueAccessor, allBindings) {
-          var value;
-          return value = valueAccessor();
-        }
-      };
       ko.applyBindings(this.getData());
+      if (this.getData().responseFileds().length) {
+        this.getData().chooseFiled(this.getData().responseFileds()[0].id());
+      }
       ref = this.getData().responseFileds();
       results = [];
       for (key in ref) {
@@ -196,22 +214,22 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
   response = {
     responseFileds: [
       {
-        filed_type: "text",
-        value: '123',
-        id: 456,
-        required: false,
-        label: 'test',
+        filed_type: ko.observable("text"),
+        value: ko.observable("123"),
+        id: ko.observable("456"),
+        required: ko.observable(false),
+        label: ko.observable("test"),
         filed_options: {
-          size: "one_column"
+          size: ko.observable("one_column")
         }
       }, {
-        filed_type: "text",
-        value: '',
-        id: 234,
-        required: false,
-        label: 'test',
+        filed_type: ko.observable("text"),
+        value: ko.observable("123"),
+        id: ko.observable("234"),
+        required: ko.observable(false),
+        label: ko.observable("test"),
         filed_options: {
-          size: "one_column"
+          size: ko.observable("one_column")
         }
       }
     ],
