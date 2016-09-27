@@ -4,6 +4,45 @@
     list-style none
     font-style none
     font-weight normal
+    font-family "Roboto",sans-serif
+html
+    font-family "Roboto",sans-serif
+    -ms-text-size-adjust 100%
+    -webkit-text-size-adjust 100%
+@font-face 
+  font-family "Roboto"
+  src local(Roboto Thin), url("../font/roboto/Roboto-Thin.eot")
+  src url("../font/roboto/Roboto-Thin.eot?#iefix") format("embedded-opentype"), url("../font/roboto/Roboto-Thin.woff2") format("woff2"), url("../font/roboto/Roboto-Thin.woff") format("woff"), url("../font/roboto/Roboto-Thin.ttf") format("truetype")
+  font-weight 200
+
+
+@font-face 
+  font-family "Roboto"
+  src local(Roboto Light), url("../fonts/roboto/Roboto-Light.eot")
+  src url("../font/roboto/Roboto-Light.eot?#iefix") format("embedded-opentype"), url("../font/roboto/Roboto-Light.woff2") format("woff2"), url("../font/roboto/Roboto-Light.woff") format("woff"), url("../font/roboto/Roboto-Light.ttf") format("truetype")
+  font-weight 300
+
+
+@font-face 
+  font-family "Roboto"
+  src local(Roboto Regular), url("../font/roboto/Roboto-Regular.eot")
+  src url("../font/roboto/Roboto-Regular.eot?#iefix") format("embedded-opentype"), url("../font/roboto/Roboto-Regular.woff2") format("woff2"), url("../font/roboto/Roboto-Regular.woff") format("woff"), url("../font/roboto/Roboto-Regular.ttf") format("truetype")
+  font-weight 400
+
+
+@font-face 
+  font-family "Roboto"
+  src url("../font/roboto/Roboto-Medium.eot")
+  src url("../font/roboto/Roboto-Medium.eot?#iefix") format("embedded-opentype"), url("../font/roboto/Roboto-Medium.woff2") format("woff2"), url("../font/roboto/Roboto-Medium.woff") format("woff"), url("../font/roboto/Roboto-Medium.ttf") format("truetype")
+  font-weight 500
+
+
+@font-face 
+  font-family "Roboto"
+  src url("../font/roboto/Roboto-Bold.eot")
+  src url("../font/roboto/Roboto-Bold.eot?#iefix") format("embedded-opentype"), url("../font/roboto/Roboto-Bold.woff2") format("woff2"), url("../font/roboto/Roboto-Bold.woff") format("woff"), url("../font/roboto/Roboto-Bold.ttf") format("truetype")
+  font-weight 700
+
 shadow = rgba(0, 0, 0, 0.156863) 0px 2px 5px 0px, rgba(0, 0, 0, 0.117647) 0px 2px 10px 0px
 c-d-2 = rgb(25,25,25)
 c-d-1 = rgb(52,52,52)
@@ -12,6 +51,7 @@ c-g = rgb(139,139,139)
 c-g-1 = rgb( 201,201,201 )
 c-btn-b = rgb(70,70,70)
 space-c = rgb(38,38,38)
+c-r = #ca4341
 space-border = 1px solid space-c
 c-b = #00a3d9
 c-d = #167195
@@ -33,6 +73,7 @@ c-l = #e7eaec
 .crf-form-text
     height line-height
     line-height line-height
+    width 100%
     background-color rgba(0,0,0,.4)
     border 1px solid rgba( 0,0,0,.41 )
     border-radius 2px
@@ -40,10 +81,22 @@ c-l = #e7eaec
     padding-left .5em
     outline none
     transition 200ms
+    box-sizing border-box
+    &+span
+        color c-l
+        
     &:focus
         background-color #f9f9f9
         border-color #eee
-        color #333 
+        color #333
+        &+span
+            color #333
+.crf-form-select
+    @extend .crf-form-text
+    appearance  none
+    -webkit-appearance  none
+    -moz-appearance  none
+    -ms-appearance  none  
 body
     background-color c-d-2
     min-width 1024px
@@ -184,20 +237,32 @@ body
                                 width 3.6em
                             >div
                                 display table-cell
+                                position relative
                                 >input
                                     @extend .crf-form-text
                                     line-height 22px
-                                    width 100%
-                                    box-sizing border-box
+                                    height 22px
                                 >select
-                                    @extend .crf-form-text
+                                    @extend .crf-form-select
                                     line-height 24px
                                     height: 24px
-                                    width 100%
-                                    -webkit-appearance  none
-                                    -moz-appearance  none
-                                    -ms-appearance  none
-                                    box-sizing border-box
+                                >span
+                                    position absolute
+                                    display inline-block
+                                    line-height 24px
+                                    top 0
+                                    right 0
+                                &.radio-box
+                                    >input[type="radio"],>input[type="checkbox"]
+                                        //display none
+                                    >label
+                                        font-size = 12px
+                                        font-size font-size
+                                        color c-l
+                                        >i
+                                            font-size font-size
+                                            
+                                    
                             
 .crf-form
     position absolute
@@ -232,8 +297,10 @@ body
                 >span
                     display inline-block
                     font-size 12px
-                    font-weight 700
-                    color c-d-2
+                    font-weight 400
+                    color c-d-1
+                    &:first-of-type
+                        color c-r
             input
                 width 100%
                 line-height 32px

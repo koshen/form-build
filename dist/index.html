@@ -69,6 +69,18 @@
                                             optionsText: 'label',
                                             optionsValue: 'value'
                                         "></select>
+                                        <span>
+                                            <i class="icon-arrow-down22"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="siting-group">
+                                    <label>必填：</label>
+                                    <div class="radio-box">
+                                        <input id="required" type="radio" name="required" value="true" data-bind="checked: filedContent().required">
+                                        <label for="required"><i data-bind="css: filedContent().required ? 'icon-radio-checked' : 'icon-radio-unchecked'"></i>  是</label>
+                                        <input type="radio" id="not_required" name="required" value="false">
+                                        <label for="not_required"><i data-bind="css: filedContent().required ? 'icon-radio-unchecked' : 'icon-radio-checked'"></i>  否</label>
                                     </div>
                                 </div>
                             </div>
@@ -84,14 +96,14 @@
                     <div class="crf-form-content" data-bind="foreach: responseFileds()">
                         <div data-bind="click: $parent.chooseFiled.bind($parent, id())" class="crf-filed-container" >
                             <div class="crf-filed-header"  >
-                                <span data-bind='visible: required'>*</span>
+                                <span data-bind="style:{ visibility: required() ? 'visiable' : 'hidden' }">*</span>
                                 <span data-bind='text: id()'></span>
                                 <span>-</span>
                                 <span data-bind='text: label()'></span>
                             </div>
                             <div data-bind="if: filed_type() =='text'">
                                 <div data-bind="style:{ width: filed_options.size() === 'one_column'? '100%' : '50%' }" >
-                                    <input type='text' data-bind='value: value()'>
+                                    <input type='text'>
                                 </div>
                             </div>
                             <div data-bind="if: filed_type() =='radio'">

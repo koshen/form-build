@@ -30,11 +30,11 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
       isLoading: ko.observable(true),
       activeFiled: ko.observable(),
       filedContent: ko.observable({
-        id: "",
-        label: "",
-        require: "",
-        errors: "",
-        filed_type: "",
+        id: ko.observable(),
+        label: ko.observable(),
+        require: ko.observable(),
+        errors: ko.observable(),
+        filed_type: ko.observable(),
         filed_options: []
       }),
       mode: ko.observable({
@@ -174,6 +174,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
         this.setData(key, value);
       }
       this.init();
+      console.log(this.getData().filedContent());
     }
 
     FormBuilder.prototype.setMode = function(value, label) {
@@ -215,16 +216,14 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     responseFileds: [
       {
         filed_type: ko.observable("text"),
-        value: ko.observable("123"),
         id: ko.observable("456"),
-        required: ko.observable(false),
+        required: ko.observable(true),
         label: ko.observable("test"),
         filed_options: {
           size: ko.observable("one_column")
         }
       }, {
         filed_type: ko.observable("text"),
-        value: ko.observable("123"),
         id: ko.observable("234"),
         required: ko.observable(false),
         label: ko.observable("test"),

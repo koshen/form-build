@@ -21,11 +21,11 @@
             isLoading: ko.observable(true)
             activeFiled: ko.observable()
             filedContent: ko.observable({
-                id:""
-                label:""
-                require:""
-                errors: ""
-                filed_type: ""
+                id:ko.observable()
+                label:ko.observable()
+                require:ko.observable()
+                errors: ko.observable()
+                filed_type: ko.observable()
                 filed_options:[]
             })
             mode: ko.observable({value: "base",label: "基本属性"})
@@ -88,6 +88,7 @@
             for key, value of options
                 @setData( key, value )
             @init()
+            console.log @getData().filedContent()
        
         setMode: ( value, label ) =>
             @setData("mode",{value:value,label:label})
@@ -104,9 +105,8 @@
         responseFileds:[
             {
                 filed_type: ko.observable("text")
-                value: ko.observable("123")
                 id: ko.observable("456")
-                required: ko.observable(false)
+                required: ko.observable(true)
                 label: ko.observable("test")
                 filed_options:{
                     size: ko.observable("one_column")
@@ -114,7 +114,6 @@
             }
             {
                 filed_type: ko.observable("text")
-                value: ko.observable("123")
                 id: ko.observable("234")
                 required: ko.observable(false)
                 label: ko.observable("test")
